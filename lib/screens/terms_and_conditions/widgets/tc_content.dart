@@ -1,0 +1,3 @@
+final String tcTexts =
+  'Welcome to Cap VPN! By using our services, you agree to the following terms and conditions. Please read them carefully.\n'
+      'We are committed to protecting your privacy and data. Cap VPN follows strict policies in compliance with the European Unions General Data Protection Regulation (GDPR) and other applicable laws. You agree not to use Cap VPN for any illegal, fraudulent,or harmful activities.';
