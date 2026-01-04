@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 import '../../../screens/splash/data/datasources/remote/remote_data_sources.dart';
-import '../../../screens/splash/domain/usecases/subscription_status_usecase.dart';
+import '../../../screens/splash/domain/usecases/get_subscription_status_with_cache_usecase.dart';
+import '../../../screens/splash/domain/usecases/fetch_data_based_on_subscription_usecase.dart';
 import '../../network/api_service.dart';
 import './dependencies.dart';
 
@@ -14,9 +15,12 @@ Future<void> setupDependencies() async {
     () => SplashScreenLocalDataSourceImpl(),
   );
 
-  getIt.registerLazySingleton<ApiService>(() => ApiService());
+  if (!getIt.isRegistered<ApiService>()) {
+    getIt.registerLazySingleton<ApiService>(() => ApiService());
+  }
+
   getIt.registerLazySingleton<SplashScreenRemoteDataSource>(
-    () => SplashScreenRemoteDataSourceImpl(apiService: getIt<ApiService>(),)
+    () => SplashScreenRemoteDataSourceImpl(apiService: getIt<ApiService>())
   );
 
   // Repositories
@@ -32,15 +36,20 @@ Future<void> setupDependencies() async {
     () => CheckAcceptedPolicyUseCase(getIt<SplashScreenRepository>()),
   );
 
-  getIt.registerLazySingleton<SubscriptionStatusUseCase>(
-    () => SubscriptionStatusUseCase(getIt<SplashScreenRepository>()),
+  getIt.registerLazySingleton<GetSubscriptionStatusWithCacheUseCase>(
+    () => GetSubscriptionStatusWithCacheUseCase(getIt<SplashScreenRepository>()),
+  );
+
+  getIt.registerLazySingleton<FetchDataBasedOnSubscriptionUseCase>(
+    () => FetchDataBasedOnSubscriptionUseCase(getIt<SplashScreenRepository>()),
   );
 
   // BLoCs - Factory because we might need multiple instances or recreate on navigation
   getIt.registerFactory<SplashScreenBloc>(
     () => SplashScreenBloc(
       checkAcceptedPolicyUseCase: getIt<CheckAcceptedPolicyUseCase>(),
-      subscriptionStatusUseCase: getIt<SubscriptionStatusUseCase>(),
+      getSubscriptionStatusWithCacheUseCase: getIt<GetSubscriptionStatusWithCacheUseCase>(),
+      fetchDataBasedOnSubscriptionUseCase: getIt<FetchDataBasedOnSubscriptionUseCase>(),
     ),
   );
 }

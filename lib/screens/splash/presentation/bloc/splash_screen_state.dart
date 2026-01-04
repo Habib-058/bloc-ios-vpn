@@ -8,16 +8,12 @@ class SplashScreenState extends Equatable {
   final bool isInitialized;
   final String? errorMessage;
   final bool isTCAccepted;
-  final SubscriptionStatus? subscriptionStatus;
-  final isSubscribed;
 
   const SplashScreenState({
     this.isLoading = false,
     this.isInitialized = false,
     this.errorMessage,
     this.isTCAccepted = false,
-    this.subscriptionStatus,
-    this.isSubscribed = false,
   });
 
   SplashScreenState copyWith({
@@ -25,16 +21,12 @@ class SplashScreenState extends Equatable {
     bool? isInitialized,
     String? errorMessage,
     bool? isTCAccepted,
-    SubscriptionStatus? subscriptionStatus,
-    bool? isSubscribed,
   }) {
     return SplashScreenState(
       isLoading: isLoading ?? this.isLoading,
       isInitialized: isInitialized ?? this.isInitialized,
       errorMessage: errorMessage,
       isTCAccepted: isTCAccepted ?? this.isTCAccepted,
-      subscriptionStatus: subscriptionStatus ?? this.subscriptionStatus,
-      isSubscribed: isSubscribed ?? this.isSubscribed,
     );
   }
 
@@ -44,7 +36,5 @@ class SplashScreenState extends Equatable {
         isInitialized,
         errorMessage,
         isTCAccepted,
-        subscriptionStatus,
-        isSubscribed,
       ];
 }

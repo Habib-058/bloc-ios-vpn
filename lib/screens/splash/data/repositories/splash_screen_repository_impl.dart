@@ -1,6 +1,7 @@
 import 'package:bloc_vpn_ios/screens/splash/data/datasources/remote/remote_data_sources.dart';
 import 'package:bloc_vpn_ios/screens/splash/domain/entities/subscription_status_entity.dart';
 
+import '../../../server/domain/entities/server_response_entity.dart';
 import '../../domain/repositories/splash_screen_repository.dart';
 import '../datasources/local/local_data_sources.dart';
 
@@ -23,5 +24,15 @@ class SplashScreenRepositoryImpl extends SplashScreenRepository {
   @override
   Future<SubscriptionStatus> getSubscriptionStatus() {
     return remoteDataSource.getSubscriptionStatus();
+  }
+
+  @override
+  Future<ServerResponse> fetchPremiumData() {
+    return remoteDataSource.fetchPremiumServers();
+  }
+
+  @override
+  Future<ServerResponse> fetchFreeData() {
+    return remoteDataSource.fetchFreeServers();
   }
 }

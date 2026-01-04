@@ -1,25 +1,25 @@
 import 'package:bloc/bloc.dart';
-import 'package:bloc_vpn_ios/core/cache_repositories/user_preferences_repository.dart';
 import 'package:bloc_vpn_ios/screens/splash/domain/usecases/check_accepted_policy_usecase.dart';
 import 'package:bloc_vpn_ios/screens/splash/presentation/bloc/splash_screen_event.dart';
 import 'package:bloc_vpn_ios/screens/splash/presentation/bloc/splash_screen_state.dart';
 
-import '../../../../core/cache_repositories/server_cache_repositories/server_cache_repository.dart';
-import '../../domain/usecases/subscription_status_usecase.dart';
+import '../../domain/usecases/get_subscription_status_with_cache_usecase.dart';
+import '../../domain/usecases/fetch_data_based_on_subscription_usecase.dart';
 
 class SplashScreenBloc extends Bloc<SplashScreenEvent, SplashScreenState> {
   final CheckAcceptedPolicyUseCase checkAcceptedPolicyUseCase;
-  final SubscriptionStatusUseCase subscriptionStatusUseCase;
+  final GetSubscriptionStatusWithCacheUseCase getSubscriptionStatusWithCacheUseCase;
+  final FetchDataBasedOnSubscriptionUseCase fetchDataBasedOnSubscriptionUseCase;
 
   SplashScreenBloc({
     required this.checkAcceptedPolicyUseCase,
-    required this.subscriptionStatusUseCase,
+    required this.getSubscriptionStatusWithCacheUseCase,
+    required this.fetchDataBasedOnSubscriptionUseCase,
   }) : super(const SplashScreenState()) {
     on<InitializeSplashScreen>(_onInitializeSplashScreen);
-    // on<CheckAcceptedTCStatus>(_onCheckAcceptedTCStatus);
   }
 
-  /// Main initialization handler - handles all async operations
+  /// Main initialization handler - handles presentation logic only
   Future<void> _onInitializeSplashScreen(
     InitializeSplashScreen event,
     Emitter<SplashScreenState> emit,
@@ -27,33 +27,25 @@ class SplashScreenBloc extends Bloc<SplashScreenEvent, SplashScreenState> {
     emit(state.copyWith(isLoading: true));
 
     try {
-      // Run both operations (can be parallel if independent)
+      // Presentation Logic: Check accepted policy
       final isAccepted = await checkAcceptedPolicyUseCase();
-      final subscriptionStatusResponse = await subscriptionStatusUseCase();
 
-      // Handle subscription status based on response
-      // You can perform different actions based on subscription status here
-      if (subscriptionStatusResponse.isSuccess && subscriptionStatusResponse.user != null) {
-        // Success case - user has valid subscription
-        UserPreferencesRepository.setUserSubscriptionStatus(subscriptionStatusResponse.user?.isSubscriptionStatus ?? false);
-        UserPreferencesRepository.setCurrentTimeStampToCheckSubscription();
+      // Presentation Logic: Get subscription status (business logic handled in use case)
+      final subscriptionResult = await getSubscriptionStatusWithCacheUseCase();
 
-      } else {
-        // Failed case - handle subscription error
-        // subscriptionStatusResponse.errorMessage contains error details
-      }
+      /// Presentation Logic: Fetch data based on subscription (business logic handled in use case)
+      // await fetchDataBasedOnSubscriptionUseCase(subscriptionResult.isSubscribed);
 
-      // Emit state with all the data
+      // Presentation Logic: Emit state for UI
       emit(
         state.copyWith(
           isLoading: false,
           isInitialized: true,
           isTCAccepted: isAccepted,
-          subscriptionStatus: subscriptionStatusResponse,
-          isSubscribed: subscriptionStatusResponse.user?.isSubscriptionStatus,
         ),
       );
     } catch (e) {
+      // Presentation Logic: Handle error state
       emit(
         state.copyWith(
           isLoading: false,
@@ -64,5 +56,4 @@ class SplashScreenBloc extends Bloc<SplashScreenEvent, SplashScreenState> {
       );
     }
   }
-
 }
