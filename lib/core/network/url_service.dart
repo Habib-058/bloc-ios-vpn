@@ -25,4 +25,5 @@ abstract class UrlHelper {
   static final String contactUs = "send_email.php";
   // TODO: Replace with your actual list items endpoint
   static final String getListItems = "get_list_items.php";
+  static String checkSubStatus(String token) => 'get_sub_status?google_id=$token';
 }

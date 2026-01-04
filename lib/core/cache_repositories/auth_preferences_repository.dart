@@ -1,5 +1,7 @@
-import '../strings.dart';
-import 'shared_preferences_repository.dart';
+import 'package:bloc_vpn_ios/core/cache_repositories/shared_preferences_repository.dart';
+
+import '../utils/strings.dart';
+
 
 class AuthPreferencesRepository {
   // Private constructor to prevent instantiation
@@ -35,6 +37,14 @@ class AuthPreferencesRepository {
   /// Clear FCM token
   static Future<bool> clearFcmToken() async {
     return await SharedPreferencesRepository.remove(Strings.fcmToken);
+  }
+
+  static Future<String?> getUserSocialToken() async {
+    return await SharedPreferencesRepository.getString(Strings.userSocialToken);
+  }
+
+  static Future<void> setUserSocialToken(bool acceptedPolicy) async {
+    await SharedPreferencesRepository.saveBool(Strings.acceptedPolicy, acceptedPolicy);
   }
 }
 

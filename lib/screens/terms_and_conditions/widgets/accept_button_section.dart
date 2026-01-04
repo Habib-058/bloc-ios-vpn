@@ -1,5 +1,5 @@
 import 'package:bloc_vpn_ios/core/routes/app_routes.dart';
-import 'package:bloc_vpn_ios/core/utils/repositories/user_preferences_repository.dart';
+import 'package:bloc_vpn_ios/core/cache_repositories/user_preferences_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

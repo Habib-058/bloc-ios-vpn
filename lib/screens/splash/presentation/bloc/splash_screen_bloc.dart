@@ -1,16 +1,20 @@
 import 'package:bloc/bloc.dart';
+import 'package:bloc_vpn_ios/core/cache_repositories/user_preferences_repository.dart';
 import 'package:bloc_vpn_ios/screens/splash/domain/usecases/check_accepted_policy_usecase.dart';
 import 'package:bloc_vpn_ios/screens/splash/presentation/bloc/splash_screen_event.dart';
 import 'package:bloc_vpn_ios/screens/splash/presentation/bloc/splash_screen_state.dart';
 
+import '../../../../core/cache_repositories/server_cache_repositories/server_cache_repository.dart';
+import '../../domain/usecases/subscription_status_usecase.dart';
+
 class SplashScreenBloc extends Bloc<SplashScreenEvent, SplashScreenState> {
   final CheckAcceptedPolicyUseCase checkAcceptedPolicyUseCase;
-  // Add more use cases here as needed
-  // final FetchUserDataUseCase fetchUserDataUseCase;
-  // final CheckAppVersionUseCase checkAppVersionUseCase;
+  final SubscriptionStatusUseCase subscriptionStatusUseCase;
 
-  SplashScreenBloc({required this.checkAcceptedPolicyUseCase})
-      : super(const SplashScreenState()) {
+  SplashScreenBloc({
+    required this.checkAcceptedPolicyUseCase,
+    required this.subscriptionStatusUseCase,
+  }) : super(const SplashScreenState()) {
     on<InitializeSplashScreen>(_onInitializeSplashScreen);
     // on<CheckAcceptedTCStatus>(_onCheckAcceptedTCStatus);
   }
@@ -23,55 +27,42 @@ class SplashScreenBloc extends Bloc<SplashScreenEvent, SplashScreenState> {
     emit(state.copyWith(isLoading: true));
 
     try {
-
+      // Run both operations (can be parallel if independent)
       final isAccepted = await checkAcceptedPolicyUseCase();
-      // await fetchUserDataUseCase();
-      // await checkAppVersionUseCase();
+      final subscriptionStatusResponse = await subscriptionStatusUseCase();
 
-      // Option B: Parallel (all at once) - faster
-      // final results = await Future.wait([
-      //   checkAcceptedPolicyUseCase(),
-      //   fetchUserDataUseCase(),
-      //   checkAppVersionUseCase(),
-      // ]);
-      // final isAccepted = results[0] as bool;
+      // Handle subscription status based on response
+      // You can perform different actions based on subscription status here
+      if (subscriptionStatusResponse.isSuccess && subscriptionStatusResponse.user != null) {
+        // Success case - user has valid subscription
+        UserPreferencesRepository.setUserSubscriptionStatus(subscriptionStatusResponse.user?.isSubscriptionStatus ?? false);
+        UserPreferencesRepository.setCurrentTimeStampToCheckSubscription();
 
-      emit(state.copyWith(
-        isLoading: false,
-        isInitialized: true,
-        isTCAccepted: isAccepted,
-      ));
+      } else {
+        // Failed case - handle subscription error
+        // subscriptionStatusResponse.errorMessage contains error details
+      }
+
+      // Emit state with all the data
+      emit(
+        state.copyWith(
+          isLoading: false,
+          isInitialized: true,
+          isTCAccepted: isAccepted,
+          subscriptionStatus: subscriptionStatusResponse,
+          isSubscribed: subscriptionStatusResponse.user?.isSubscriptionStatus,
+        ),
+      );
     } catch (e) {
-      emit(state.copyWith(
-        isLoading: false,
-        isInitialized: true,
-        isTCAccepted: false,
-        errorMessage: e.toString(),
-      ));
+      emit(
+        state.copyWith(
+          isLoading: false,
+          isInitialized: true,
+          isTCAccepted: false,
+          errorMessage: e.toString(),
+        ),
+      );
     }
   }
 
-  /// Legacy handler - kept for backward compatibility
-  Future<void> _onCheckAcceptedTCStatus(
-    CheckAcceptedTCStatus event,
-    Emitter<SplashScreenState> emit,
-  ) async {
-    emit(state.copyWith(isLoading: true));
-
-    try {
-      final isAccepted = await checkAcceptedPolicyUseCase();
-      emit(state.copyWith(
-        isLoading: false,
-        isInitialized: true,
-        isTCAccepted: isAccepted,
-      ));
-    } catch (e) {
-      emit(state.copyWith(
-        isLoading: false,
-        isInitialized: true,
-        isTCAccepted: false,
-        errorMessage: e.toString(),
-      ));
-    }
-  }
 }

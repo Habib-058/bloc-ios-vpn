@@ -8,5 +8,8 @@ class CheckAcceptedPolicyUseCase {
   Future<bool> call() async {
     return await repository.getAcceptedTC();
   }
+  void setAcceptedPolicy(bool accepted) {
+    repository.setAcceptedTC(accepted);
+  }
 }
 
