@@ -16,12 +16,12 @@ class SplashScreenBloc extends Bloc<SplashScreenEvent, SplashScreenState> {
     required this.getSubscriptionStatusWithCacheUseCase,
     required this.fetchDataBasedOnSubscriptionUseCase,
   }) : super(const SplashScreenState()) {
-    on<InitializeSplashScreen>(_onInitializeSplashScreen);
+    on<InitializeSplashScreenEvent>(_onInitializeSplashScreen);
   }
 
   /// Main initialization handler - handles presentation logic only
   Future<void> _onInitializeSplashScreen(
-    InitializeSplashScreen event,
+    InitializeSplashScreenEvent event,
     Emitter<SplashScreenState> emit,
   ) async {
     emit(state.copyWith(isLoading: true));

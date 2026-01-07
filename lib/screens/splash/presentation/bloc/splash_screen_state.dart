@@ -1,6 +1,3 @@
-
-
-import 'package:bloc_vpn_ios/screens/splash/domain/entities/subscription_status_entity.dart';
 import 'package:equatable/equatable.dart';
 
 class SplashScreenState extends Equatable {

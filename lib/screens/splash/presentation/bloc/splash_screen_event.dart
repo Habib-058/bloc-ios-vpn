@@ -9,11 +9,6 @@ abstract class SplashScreenEvent extends Equatable {
 }
 
 /// Single initialization event that handles all splash screen setup
-class InitializeSplashScreen extends SplashScreenEvent {
-  const InitializeSplashScreen();
-}
-
-/// Legacy event - kept for backward compatibility if needed
-class CheckAcceptedTCStatus extends SplashScreenEvent {
-  const CheckAcceptedTCStatus();
+class InitializeSplashScreenEvent extends SplashScreenEvent {
+  const InitializeSplashScreenEvent();
 }
