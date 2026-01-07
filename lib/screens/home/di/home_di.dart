@@ -29,6 +29,7 @@ Future<void> setupHomeDependencies() async {
     () => HomeScreenBloc(
       initializeHomeVpnLocationUseCase:
           getIt<InitializeHomeVpnLocationUseCase>(),
+          // getIt<InitializeHomeVpnLocationUseCase>(),
     ),
   );
 }
