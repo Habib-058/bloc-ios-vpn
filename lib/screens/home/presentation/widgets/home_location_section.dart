@@ -40,7 +40,7 @@ class HomeLocationSection extends StatelessWidget {
         child: const Padding(
           padding: EdgeInsets.symmetric(horizontal: 12),
           child: Text(
-            "Choose location",
+            "Choose locations",
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.w400,
