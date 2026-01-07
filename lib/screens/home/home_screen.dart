@@ -37,7 +37,7 @@ class HomeScreen extends StatelessWidget {
 
                   const SizedBox(height: 15),
 
-                  SubscriptionCardSection(),
+                 SubscriptionCardSection(),
 
                   const SizedBox(height: 30),
 

@@ -1,10 +1,11 @@
 import 'package:bloc_vpn_ios/core/routes/app_routes.dart';
-import 'package:bloc_vpn_ios/core/utils/dependency_injection/global_di_container.dart';
 import 'package:bloc_vpn_ios/screens/splash/presentation/bloc/splash_screen_bloc.dart';
 import 'package:bloc_vpn_ios/screens/splash/presentation/bloc/splash_screen_event.dart';
 import 'package:bloc_vpn_ios/screens/splash/presentation/bloc/splash_screen_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../core/utils/dependency_injection/core_dependencies.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});

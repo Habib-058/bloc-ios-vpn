@@ -5,4 +5,5 @@ class Strings {
   static final String userSocialToken = 'userSocialToken';
   static final String subscriptionStatus = 'subscription_status';
   static final String subscriptionStatusLastChecked = 'subscription_status_last_checked';
+  static final String firstServer = 'firstServer';
 }

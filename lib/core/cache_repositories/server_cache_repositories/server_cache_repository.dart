@@ -26,6 +26,14 @@ class ServerCacheRepository {
   // Cache refresh interval: 6 hours
   static const Duration _cacheRefreshInterval = Duration(hours: 6);
 
+  static Future<void> setFirstServer(String server) async {
+    await SharedPreferencesRepository.saveString(Strings.firstServer, server);
+  }
+
+  static Future<String?> getFirstServer() async {
+    return await SharedPreferencesRepository.getString(Strings.firstServer);
+  }
+
 
 
 }
