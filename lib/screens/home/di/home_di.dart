@@ -3,6 +3,7 @@ import '../data/datasources/home_local_data_source.dart';
 import '../data/repositories/home_screen_repository_impl.dart';
 import '../domain/repositories/home_screen_repository.dart';
 import '../domain/usecases/initialize_home_vpn_location_usecase.dart';
+import '../domain/usecases/home_switch_protocol_usecase.dart';
 import '../presentation/bloc/home_screen_bloc.dart';
 
 /// Register all Home Screen feature dependencies
@@ -24,12 +25,16 @@ Future<void> setupHomeDependencies() async {
     () => InitializeHomeVpnLocationUseCase(getIt<HomeScreenRepository>()),
   );
 
+  getIt.registerLazySingleton<HomeSwitchProtocolUseCase>(
+    () => HomeSwitchProtocolUseCase(getIt<HomeScreenRepository>()),
+  );
+
   // BLoCs
   getIt.registerFactory<HomeScreenBloc>(
     () => HomeScreenBloc(
       initializeHomeVpnLocationUseCase:
           getIt<InitializeHomeVpnLocationUseCase>(),
-          // getIt<InitializeHomeVpnLocationUseCase>(),
+      homeSwitchProtocolUseCase: getIt<HomeSwitchProtocolUseCase>(),
     ),
   );
 }
