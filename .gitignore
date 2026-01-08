@@ -33,6 +33,7 @@ migrate_working_dir/
 /build/
 /coverage/
 
+
 # Symbolication related
 app.*.symbols
 
@@ -46,3 +47,4 @@ app.*.map.json
 
 # FVM Version Cache
 .fvm/
+/packages/
