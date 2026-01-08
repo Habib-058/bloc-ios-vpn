@@ -219,6 +219,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_v2ray:
+    dependency: "direct main"
+    description:
+      path: "packages/flutter_v2ray_mobile"
+      relative: true
+    source: path
+    version: "1.1.1"
   flutter_web_plugins:
     dependency: transitive
     description: flutter
