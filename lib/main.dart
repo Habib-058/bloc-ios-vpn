@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:bloc_vpn_ios/core/routes/app_navigation.dart';
 import 'package:bloc_vpn_ios/core/utils/dependency_injection/global_di_container.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:http/http.dart' as http;
 import 'core/network/api_service.dart';
 import 'core/network/url_service.dart';
@@ -22,12 +23,13 @@ void main() async {
 
   await LocalLogger.initialize(
     clearInterval: const Duration(days: 7), // Clear logs every 7 days
-    uploader: (File jsonFile, {required DateTime from, required DateTime to}) async {
-      // Implement your log upload logic here
-      // For now, return true to indicate success (logs will be cleared)
-      // You can implement actual upload to your server later
-      return true;
-    },
+    uploader:
+        (File jsonFile, {required DateTime from, required DateTime to}) async {
+          // Implement your log upload logic here
+          // For now, return true to indicate success (logs will be cleared)
+          // You can implement actual upload to your server later
+          return true;
+        },
   );
 
   await ApiService.initialize(
@@ -72,13 +74,17 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'CAP VPN',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+    return ScreenUtilInit(
+      designSize: const Size(375, 812),
+      minTextAdapt: true,
+      child: MaterialApp(
+        title: 'CAP VPN',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        ),
+        initialRoute: AppRoutes.splash,
+        routes: AppNavigation.getRoutes(),
       ),
-      initialRoute: AppRoutes.splash,
-      routes: AppNavigation.getRoutes(),
     );
   }
 }
