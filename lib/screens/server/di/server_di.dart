@@ -1,3 +1,6 @@
+import 'package:bloc_vpn_ios/core/cache_repositories/server_cache_repositories/server_cache_repository.dart';
+import 'package:bloc_vpn_ios/screens/server/data/datasources/server_local_data_source.dart';
+
 import '../../../core/network/api_service.dart';
 import '../../../core/utils/dependency_injection/core_dependencies.dart';
 import '../data/datasources/server_remote_data_source.dart';
@@ -17,10 +20,13 @@ Future<void> setupServerDependencies() async {
     ),
   );
 
+
   // Repositories
   getIt.registerLazySingleton<ServerScreenRepository>(
     () => ServerScreenRepositoryImpl(
       remoteDataSource: getIt<ServerRemoteDataSource>(),
+      localDataSource: getIt<ServerLocalDataSource>(),
+      serverCacheRepository: getIt<ServerCacheRepository>(),
     ),
   );
 

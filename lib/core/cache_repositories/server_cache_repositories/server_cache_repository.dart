@@ -1,9 +1,12 @@
+import 'package:bloc_vpn_ios/screens/server/domain/entities/server_list_entity.dart';
+import 'package:hive/hive.dart';
+
 import '../../utils/strings.dart';
 import '../shared_preferences_repository.dart';
 
 class ServerCacheRepository {
   static ServerCacheRepository? _instance;
-  // static Box<ServerListResponseModel>? _box;
+  static Box<ServerList>? _box;
 
   ServerCacheRepository._();
 
@@ -26,12 +29,25 @@ class ServerCacheRepository {
   // Cache refresh interval: 6 hours
   static const Duration _cacheRefreshInterval = Duration(hours: 6);
 
+  Future<Box<ServerList>> getBox() async {
+    if (_box != null && _box!.isOpen) {
+      return _box!;
+    }
+    _box = await Hive.openBox<ServerList>(_boxName);
+    return _box!;
+  }
+
   static Future<void> setFirstServer(String server) async {
     await SharedPreferencesRepository.saveString(Strings.firstServer, server);
   }
 
   static Future<String?> getFirstServer() async {
     return await SharedPreferencesRepository.getString(Strings.firstServer);
+  }
+
+   Future<ServerList?> getCachedFreeServers() async {
+    final box = await getBox();
+    return box.get(Strings.freeServersKey);
   }
 
 
