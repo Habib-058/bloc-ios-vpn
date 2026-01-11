@@ -11,6 +11,7 @@ class HomeScreenState extends Equatable {
   final ServerModel? vpnLocation;
   final CapVPNConnectionStage vpnStage;
   final CapVPNConnectionStatus? vpnStatus;
+  final bool showTimer;
 
   const HomeScreenState({
     this.isLoading = false,
@@ -19,6 +20,7 @@ class HomeScreenState extends Equatable {
     this.vpnLocation,
     this.vpnStage = CapVPNConnectionStage.disconnected,
     this.vpnStatus,
+    this.showTimer = false,
   });
 
   HomeScreenState copyWith({
@@ -28,6 +30,7 @@ class HomeScreenState extends Equatable {
     ServerModel? vpnLocation,
     CapVPNConnectionStage? vpnStage,
     CapVPNConnectionStatus? vpnStatus,
+    bool? showTimer,
   }) {
     return HomeScreenState(
       isLoading: isLoading ?? this.isLoading,
@@ -36,6 +39,7 @@ class HomeScreenState extends Equatable {
       vpnLocation: vpnLocation ?? this.vpnLocation,
       vpnStage: vpnStage ?? this.vpnStage,
       vpnStatus: vpnStatus ?? this.vpnStatus,
+      showTimer: showTimer ?? this.showTimer,
     );
   }
 
@@ -47,5 +51,6 @@ class HomeScreenState extends Equatable {
         vpnLocation,
         vpnStage,
         vpnStatus,
+        showTimer,
       ];
 }

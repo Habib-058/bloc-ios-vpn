@@ -11,7 +11,7 @@ class TimerSection extends StatelessWidget {
     return Column(
       children: [
         const Text(
-          "Connection Time",
+          "Connection Time see",
           style: TextStyle(
             color: Colors.black,
             fontSize: 24,

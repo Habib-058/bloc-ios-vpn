@@ -31,3 +31,7 @@ class OnVpnStatusChangedEvent extends HomeScreenEvent {
   @override
   List<Object?> get props => [status];
 }
+
+class CheckVPNStatusAndTimerEvent extends HomeScreenEvent {
+  const CheckVPNStatusAndTimerEvent();
+}

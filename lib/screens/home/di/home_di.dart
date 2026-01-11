@@ -2,6 +2,7 @@ import '../../../core/utils/dependency_injection/core_dependencies.dart';
 import '../data/datasources/home_local_data_source.dart';
 import '../data/repositories/home_screen_repository_impl.dart';
 import '../domain/repositories/home_screen_repository.dart';
+import '../domain/usecases/get_subscription_status_usecase.dart';
 import '../domain/usecases/home_initialize_vpn_usecase.dart';
 import '../domain/usecases/home_vpn_stream_usecase.dart';
 import '../domain/usecases/initialize_home_vpn_location_usecase.dart';
@@ -39,6 +40,10 @@ Future<void> setupHomeDependencies() async {
     () => HomeVpnStreamUseCase(),
   );
 
+  getIt.registerLazySingleton<GetSubscriptionStatusUseCase>(
+    () => GetSubscriptionStatusUseCase(),
+  );
+
   // BLoCs
   getIt.registerFactory<HomeScreenBloc>(
     () => HomeScreenBloc(
@@ -47,6 +52,7 @@ Future<void> setupHomeDependencies() async {
       homeSwitchProtocolUseCase: getIt<HomeSwitchProtocolUseCase>(),
       homeInitializeVpnUseCase: getIt<HomeInitializeVpnUseCase>(),
       homeVpnStreamUseCase: getIt<HomeVpnStreamUseCase>(),
+      getSubscriptionStatusUseCase: getIt<GetSubscriptionStatusUseCase>(),
     ),
   );
 }
